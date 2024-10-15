@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import AuthContext from '../context/AuthContext';
 import {
@@ -15,21 +15,22 @@ import {
     Alert,
     CircularProgress,
     TablePagination,
-    Button // Import Button for delete action
+    Button
 } from '@mui/material';
 
 const TransactionsById = () => {
+    const { auth } = useContext(AuthContext);
+    console.log(`TransactionsByID auth = ${auth}`)
     const { id } = useParams(); // Get the ID from URL
-    const navigate = useNavigate(); // Initialize useNavigate for redirection
+    const navigate = useNavigate();
     const [transactions, setTransactions] = useState([]);
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(0); // Current page
     const [rowsPerPage, setRowsPerPage] = useState(20); // Show 20 rows per page
-    const { auth } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [balance, setBalance] = useState(0);
-    const [isViewedUserAdmin, setIsViewedUserAdmin] = useState(true); // State to check if viewed user is admin
+    const [isViewedUserAdmin, setIsViewedUserAdmin] = useState(true);
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -57,7 +58,7 @@ const TransactionsById = () => {
                 if (error.response && error.response.status === 404) {
                     setErrorMsg(''); // Clear error message when no transactions found
                 } else {
-                    setErrorMsg('Failed to load transactions.'); // General error message
+                    setErrorMsg('Failed to load transactions.');
                 }
                 console.error('Error fetching transactions:', error);
             } finally {
@@ -85,10 +86,10 @@ const TransactionsById = () => {
                     headers: { Authorization: `Bearer ${auth?.accessToken}` },
                 });
                 alert("User deleted successfully.");
-                navigate('/admin/dashboard'); // Redirect to /admin/dashboard after deletion
+                navigate('/admin/dashboard');
             } catch (error) {
                 console.error('Error deleting user:', error);
-                alert("Failed to delete user."); // Show alert on delete failure
+                alert("Failed to delete user.");
             }
         }
     };
@@ -98,7 +99,6 @@ const TransactionsById = () => {
 
     return (
         <Box sx={{ p: 4, maxWidth: 900, margin: 'auto' }}>
-            {/* Display Email and Balance */}
             <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
                 Email: {email}
             </Typography>
@@ -108,12 +108,11 @@ const TransactionsById = () => {
 
             {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
 
-            {/* Delete User Button - only show if the viewed user is not an admin */}
             {!isViewedUserAdmin && (
                 <Box display="flex" justifyContent="flex-end" sx={{ mt: 2 }}>
-                    <Button 
-                        variant="contained" 
-                        color="error" 
+                    <Button
+                        variant="contained"
+                        color="error"
                         onClick={handleDeleteUser}
                     >
                         Delete User
@@ -156,9 +155,8 @@ const TransactionsById = () => {
                         </Table>
                     </TableContainer>
 
-                    {/* Pagination Control */}
                     <TablePagination
-                        rowsPerPageOptions={[20, 50, 100]} // Options to select rows per page
+                        rowsPerPageOptions={[20, 50, 100]}
                         component="div"
                         count={transactions.length}
                         rowsPerPage={rowsPerPage}

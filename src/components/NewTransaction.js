@@ -48,7 +48,7 @@ const NewTransaction = () => {
           label="Amount"
           type="number"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => setAmount(Number(e.target.value))}
           fullWidth
           required
           margin="normal"

@@ -12,7 +12,7 @@ import Unauthorized from './components/Unauthorized';
 import AdminLayout from './components/AdminLayout';
 import AdminDashboard from './components/AdminDashboard';
 import TransactionsById from './components/TransactionsById';
-
+import CreateAdmin from './components/CreateAdmin';
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
             <Route path="admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="users/:id/transactions" element={<TransactionsById />} />
+              <Route path="/admin/create-admin" element={<CreateAdmin />} />
             </Route>
           </Route>
         </Route>

@@ -17,11 +17,11 @@ const Header = () => {
     return (
         <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
             <Toolbar>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton edge="start" color="inherit" aria-label="logo" sx={{ mr: 1 }} onClick={handleGoHome}>
+                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleGoHome}>
+                    <IconButton edge="start" color="inherit" aria-label="logo" sx={{ mr: 1 }}>
                         <AccountBalanceIcon sx={{ fontSize: 32 }} />
                     </IconButton>
-                    <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', letterSpacing: 0.5 }}>
                         Web Banking App
                     </Typography>
                 </Box>

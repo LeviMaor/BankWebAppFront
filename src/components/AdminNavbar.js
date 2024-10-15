@@ -1,4 +1,4 @@
-// AdminNavbar.jsx
+// src/components/AdminNavbar.js
 import React, { useContext } from 'react';
 import { Box, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,29 +22,13 @@ const AdminNavbar = () => {
 
     return (
         <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-            <Button
-                component={Link}
-                to="/admin/dashboard"
-                variant="outlined"
-                sx={{
-                    '&:hover': {
-                        backgroundColor: 'blue',
-                        color: 'white',
-                    }
-                }}
-            >
+            <Button component={Link} to="/admin/dashboard" variant="outlined">
                 Dashboard
             </Button>
-            <Button
-                onClick={handleLogout}
-                variant="outlined"
-                sx={{
-                    '&:hover': {
-                        backgroundColor: 'blue',
-                        color: 'white',
-                    }
-                }}
-            >
+            <Button component={Link} to="/admin/create-admin" variant="outlined">
+                Create Admin
+            </Button>
+            <Button onClick={handleLogout} variant="outlined">
                 Logout
             </Button>
         </Box>
