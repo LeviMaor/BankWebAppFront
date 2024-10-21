@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-import { CircularProgress, Box } from '@mui/material';
 
 const AuthContext = createContext({});
 
@@ -43,7 +42,8 @@ export const AuthProvider = ({ children }) => {
       } else {
         setAuth({ roles: [] });
         const currentPath = window.location.pathname;
-        if (currentPath !== '/signup' && currentPath !== '/login') {
+        if (currentPath !== '/signup' && currentPath !== '/login' && currentPath !== '/forgot-password'
+          && currentPath !== '/reset-password') {
           navigate('/login');
         }
       }

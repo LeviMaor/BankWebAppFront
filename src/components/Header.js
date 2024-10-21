@@ -6,12 +6,19 @@ import AuthContext from '../context/AuthContext';
 
 const Header = () => {
     const navigate = useNavigate();
-    const { setIsAuthenticated } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
 
     const handleGoHome = () => {
-        sessionStorage.setItem('isAuthenticated', 'false');
-        setIsAuthenticated(false);
-        navigate('/');
+        if (!auth || !auth.accessToken) {
+            navigate('/login');
+        } else {
+            const isAdmin = auth.roles?.includes('admin');
+            if (isAdmin) {
+                navigate('/admin/dashboard');
+            } else {
+                navigate('/user/info');
+            }
+        }
     };
 
     return (

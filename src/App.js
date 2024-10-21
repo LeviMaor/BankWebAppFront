@@ -13,6 +13,10 @@ import AdminLayout from './components/AdminLayout';
 import AdminDashboard from './components/AdminDashboard';
 import TransactionsById from './components/TransactionsById';
 import CreateAdmin from './components/CreateAdmin';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
+import VerifyCode from './components/VerifyCode';
+import Missing from './components/Missing';
 
 function App() {
   return (
@@ -21,6 +25,9 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-code" element={<VerifyCode />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="unauthorized" element={<Unauthorized />} />
 
           <Route element={<RequireAuth allowedRoles={['user']} />}>
@@ -38,6 +45,8 @@ function App() {
               <Route path="/admin/create-admin" element={<CreateAdmin />} />
             </Route>
           </Route>
+
+          <Route path="*" element={<Missing />} />
         </Route>
       </Routes>
     </AuthProvider>
