@@ -20,7 +20,6 @@ import {
 
 const TransactionsById = () => {
     const { auth } = useContext(AuthContext);
-    console.log(`TransactionsByID auth = ${auth}`)
     const { id } = useParams(); // Get the ID from URL
     const navigate = useNavigate();
     const [transactions, setTransactions] = useState([]);

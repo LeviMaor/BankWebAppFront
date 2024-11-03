@@ -1,4 +1,3 @@
-// src/components/AdminNavbar.js
 import React, { useContext } from 'react';
 import { Box, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';

@@ -23,8 +23,8 @@ const UserTransactions = () => {
     const [transactions, setTransactions] = useState([]);
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(0); // Current page
-    const [rowsPerPage, setRowsPerPage] = useState(20); // Rows per page
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -36,16 +36,10 @@ const UserTransactions = () => {
                 });
                 const allTransactions = response.data.transactions;
 
-                const twoMonthsAgo = new Date();
-                twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
 
-                const recentTransactions = allTransactions.filter(transaction =>
-                    new Date(transaction.date) >= twoMonthsAgo
-                );
+                allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-                recentTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                setTransactions(recentTransactions);
+                setTransactions(allTransactions);
             } catch (err) {
                 setErrorMsg('Failed to load transactions');
             } finally {
@@ -112,9 +106,9 @@ const UserTransactions = () => {
                     </TableContainer>
 
                     <TablePagination
-                        rowsPerPageOptions={[10, 20, 50]} // Allow selecting how many rows per page
+                        rowsPerPageOptions={[10, 20, 50]}
                         component="div"
-                        count={transactions.length} // Total number of transactions
+                        count={transactions.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

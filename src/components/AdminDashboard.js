@@ -7,16 +7,17 @@ import {
     List,
     ListItem,
     ListItemText,
-    Link,
-    CircularProgress
+    CircularProgress,
+    Typography
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-const USERS_URL = '/users/all'; // Route to get all users
+const USERS_URL = '/users/all';
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState(true); // Track loading state
+    const [loading, setLoading] = useState(true);
     const { auth } = useContext(AuthContext);
 
     useEffect(() => {
@@ -25,11 +26,11 @@ const AdminDashboard = () => {
                 const response = await axios.get(USERS_URL, {
                     headers: { Authorization: `Bearer ${auth?.accessToken}` },
                 });
-                setUsers(response.data.users); // Set users from response
+                setUsers(response.data.users);
             } catch (error) {
                 console.error('Error fetching users:', error);
             } finally {
-                setLoading(false); // Set loading to false when done
+                setLoading(false);
             }
         };
 
@@ -66,8 +67,13 @@ const AdminDashboard = () => {
                                 <ListItemText
                                     primary={user.email}
                                     secondary={
-                                        <Link href={`/admin/users/${user._id}/transactions`} underline="hover">
-                                            View Transactions
+                                        <Link 
+                                            to={`/admin/users/${user._id}/transactions`} 
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                            <Typography sx={{ color: 'primary.main', textDecoration: 'none' }}>
+                                                View Transactions
+                                            </Typography>
                                         </Link>
                                     }
                                 />

@@ -1,4 +1,3 @@
-// AdminLayout.jsx
 import React, { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import { Box, Typography } from '@mui/material';

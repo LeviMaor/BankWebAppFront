@@ -1,4 +1,3 @@
-// src/components/CreateAdmin.js
 import React, { useState, useContext } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';

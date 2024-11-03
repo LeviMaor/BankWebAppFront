@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
-import { Container, Box, ThemeProvider, createTheme } from '@mui/material';
+import { Container, Box } from '@mui/material';
 
 const Layout = () => {
     return (

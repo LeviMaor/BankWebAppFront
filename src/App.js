@@ -42,7 +42,7 @@ function App() {
             <Route path="admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="users/:id/transactions" element={<TransactionsById />} />
-              <Route path="/admin/create-admin" element={<CreateAdmin />} />
+              <Route path="create-admin" element={<CreateAdmin />} />
             </Route>
           </Route>
 

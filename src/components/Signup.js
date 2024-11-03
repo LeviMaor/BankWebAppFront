@@ -31,7 +31,7 @@ const Signup = () => {
         headers: { 'Content-Type': 'application/json' },
       });
       alert('Signup successful. Please check your email for the verification code.');
-      setIsVerifying(true); // Set to verify mode
+      setIsVerifying(true);
     } catch (err) {
       setErrorMsg(err.response.data.message || 'Signup failed');
     }

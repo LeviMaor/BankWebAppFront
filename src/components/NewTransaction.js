@@ -52,6 +52,7 @@ const NewTransaction = () => {
           fullWidth
           required
           margin="normal"
+          inputProps={{ min: 0.01, step: 0.01 }} // Enforce positive values only
         />
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           Submit
