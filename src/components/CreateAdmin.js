@@ -1,15 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import {
-    Box,
-    Button,
-    TextField,
-    Typography,
-    Alert,
-    Paper
-} from '@mui/material';
+import { Box, Button, TextField, Typography, Alert, Paper, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const CREATE_ADMIN_URL = '/auth/admin-signup';
 
@@ -19,6 +13,11 @@ const CreateAdmin = () => {
     const [password, setPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showVerifyPassword, setShowVerifyPassword] = useState(false);
+    const passwordRef = useRef(null);
+    const verifyPasswordRef = useRef(null);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -28,6 +27,9 @@ const CreateAdmin = () => {
             setErrorMsg('Passwords do not match');
             return;
         }
+
+        setIsSubmitting(true);
+        setErrorMsg('');
 
         try {
             await axios.post(
@@ -44,7 +46,19 @@ const CreateAdmin = () => {
             navigate('/admin/dashboard');
         } catch (err) {
             setErrorMsg(err.response?.data?.message || 'Failed to create admin');
+        } finally {
+            setIsSubmitting(false);
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+        passwordRef.current.focus();
+    };
+
+    const toggleVerifyPasswordVisibility = () => {
+        setShowVerifyPassword((prev) => !prev);
+        verifyPasswordRef.current.focus();
     };
 
     return (
@@ -66,21 +80,37 @@ const CreateAdmin = () => {
                     />
                     <TextField
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         fullWidth
                         required
                         margin="normal"
+                        inputRef={passwordRef}
+                        InputProps={{
+                            endAdornment: (
+                                <IconButton onClick={togglePasswordVisibility} edge="end">
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            ),
+                        }}
                     />
                     <TextField
                         label="Verify Password"
-                        type="password"
+                        type={showVerifyPassword ? 'text' : 'password'}
                         value={verifyPassword}
                         onChange={(e) => setVerifyPassword(e.target.value)}
                         fullWidth
                         required
                         margin="normal"
+                        inputRef={verifyPasswordRef}
+                        InputProps={{
+                            endAdornment: (
+                                <IconButton onClick={toggleVerifyPasswordVisibility} edge="end">
+                                    {showVerifyPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            ),
+                        }}
                     />
                     <Button
                         type="submit"
@@ -88,8 +118,9 @@ const CreateAdmin = () => {
                         color="primary"
                         fullWidth
                         sx={{ mt: 2 }}
+                        disabled={isSubmitting}
                     >
-                        Create Admin
+                        {isSubmitting ? 'Creating...' : 'Create Admin'}
                     </Button>
                 </form>
             </Paper>

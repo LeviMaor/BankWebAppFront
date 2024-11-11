@@ -56,10 +56,9 @@ const UserTransactions = () => {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0); // Reset to first page when rows per page changes
+        setPage(0);
     };
 
-    // Get the transactions to display based on pagination
     const currentTransactions = transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (

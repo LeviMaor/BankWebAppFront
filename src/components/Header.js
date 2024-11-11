@@ -29,7 +29,7 @@ const Header = () => {
                         <AccountBalanceIcon sx={{ fontSize: 32 }} />
                     </IconButton>
                     <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', letterSpacing: 0.5 }}>
-                        Web Banking App
+                        ML Bank
                     </Typography>
                 </Box>
             </Toolbar>

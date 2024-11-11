@@ -11,10 +11,15 @@ const NewTransaction = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [amount, setAmount] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    setIsSubmitting(true);
+    setErrorMsg('');
+
     try {
       await axios.post(NEW_TRANSACTION_URL,
         JSON.stringify({ recipientEmail, amount }),
@@ -27,12 +32,16 @@ const NewTransaction = () => {
       } else {
         setErrorMsg('Failed to create transaction');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8 }}>
-      <Typography variant="h4" mb={2}>New Transaction</Typography>
+      <Typography variant="h4" mb={2} sx={{ fontWeight: 'bold', color: '#1976d2', fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+        New Transaction
+      </Typography>
       {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <form onSubmit={handleSubmit}>
         <TextField
@@ -52,10 +61,17 @@ const NewTransaction = () => {
           fullWidth
           required
           margin="normal"
-          inputProps={{ min: 0.01, step: 0.01 }} // Enforce positive values only
+          inputProps={{ min: 0.01, step: 0.01 }}
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-          Submit
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary" 
+          fullWidth 
+          sx={{ mt: 2 }} 
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </Button>
       </form>
     </Box>

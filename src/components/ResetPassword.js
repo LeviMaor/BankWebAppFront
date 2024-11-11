@@ -12,10 +12,12 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             await axios.post(RESET_PASSWORD_URL, JSON.stringify({ email, code, newPassword }), {
                 headers: { 'Content-Type': 'application/json' },
@@ -24,6 +26,8 @@ const ResetPassword = () => {
             navigate('/login');
         } catch (err) {
             setErrorMsg(err.response?.data?.message || 'Failed to reset password.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -45,8 +49,21 @@ const ResetPassword = () => {
                         required
                         margin="normal"
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                        Reset Password
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        sx={{
+                            mt: 2,
+                            backgroundColor: '#1976d2',
+                            '&:hover': {
+                                backgroundColor: '#115293',
+                            },
+                        }}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Resetting...' : 'Reset Password'}
                     </Button>
                 </form>
                 <Typography mt={2} align="center">

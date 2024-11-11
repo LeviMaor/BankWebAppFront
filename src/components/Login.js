@@ -1,8 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import axios from '../api/axios';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { Box, Button, TextField, Typography, Alert, Paper } from '@mui/material';
+import { Box, Button, TextField, Typography, Alert, Paper, CircularProgress, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const LOGIN_URL = '/auth/login';
 
@@ -11,7 +12,10 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [timer, setTimer] = useState(0); // New state for timer
+  const [timer, setTimer] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef(null);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -29,6 +33,8 @@ const Login = () => {
       setErrorMsg('Password must be at least 6 characters long');
       return;
     }
+
+    setIsLoading(true);
     try {
       const response = await axios.post(LOGIN_URL, JSON.stringify({ email, password }), {
         headers: { 'Content-Type': 'application/json' }
@@ -52,6 +58,8 @@ const Login = () => {
       } else {
         setErrorMsg('Login Failed');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,11 +70,16 @@ const Login = () => {
         setTimer(prev => prev - 1);
       }, 1000);
     } else if (timer === 0) {
-      setErrorMsg(''); // Clear the error message once the timer reaches 0
+      setErrorMsg('');
     }
 
-    return () => clearInterval(countdown); // Cleanup interval on component unmount
+    return () => clearInterval(countdown);
   }, [timer]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+    passwordRef.current.focus();
+  };
 
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8 }}>
@@ -86,20 +99,38 @@ const Login = () => {
             fullWidth
             required
             margin="normal"
-            disabled={timer > 0} // Disable input when timer is active
+            disabled={timer > 0 || isLoading}
           />
           <TextField
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             required
             margin="normal"
-            disabled={timer > 0} // Disable input when timer is active
+            disabled={timer > 0 || isLoading}
+            inputRef={passwordRef}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  onClick={togglePasswordVisibility}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              ),
+            }}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={timer > 0}>
-            Login
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+            disabled={timer > 0 || isLoading}
+          >
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
           </Button>
         </form>
         <Typography mt={2} align="center">

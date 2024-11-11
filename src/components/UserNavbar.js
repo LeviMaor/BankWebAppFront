@@ -27,10 +27,12 @@ const UserNavbar = () => {
                 variant="outlined"
                 sx={{
                     '&:hover': {
-                        backgroundColor: 'blue',
+                        backgroundColor: '#1976d2',
                         color: 'white',
                     },
-                    width: { xs: '100%', sm: 'auto' } // full width on mobile
+                    width: { xs: '100%', sm: 'auto' },
+                    borderColor: '#1976d2',
+                    color: '#1976d2'
                 }}
             >
                 User Info
@@ -41,10 +43,12 @@ const UserNavbar = () => {
                 variant="outlined"
                 sx={{
                     '&:hover': {
-                        backgroundColor: 'blue',
+                        backgroundColor: '#1976d2',
                         color: 'white',
                     },
-                    width: { xs: '100%', sm: 'auto' }
+                    width: { xs: '100%', sm: 'auto' },
+                    borderColor: '#1976d2',
+                    color: '#1976d2'
                 }}
             >
                 Transactions
@@ -55,10 +59,12 @@ const UserNavbar = () => {
                 variant="outlined"
                 sx={{
                     '&:hover': {
-                        backgroundColor: 'blue',
+                        backgroundColor: '#1976d2',
                         color: 'white',
                     },
-                    width: { xs: '100%', sm: 'auto' }
+                    width: { xs: '100%', sm: 'auto' },
+                    borderColor: '#1976d2',
+                    color: '#1976d2'
                 }}
             >
                 New Transaction
@@ -68,10 +74,12 @@ const UserNavbar = () => {
                 variant="outlined"
                 sx={{
                     '&:hover': {
-                        backgroundColor: 'blue',
+                        backgroundColor: '#1976d2',
                         color: 'white',
                     },
-                    width: { xs: '100%', sm: 'auto' }
+                    width: { xs: '100%', sm: 'auto' },
+                    borderColor: '#1976d2',
+                    color: '#1976d2'
                 }}
             >
                 Logout

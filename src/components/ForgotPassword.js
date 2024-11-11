@@ -9,10 +9,16 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsSubmitting(true);
+    setErrorMsg('');
+    setMessage('');
+
     try {
       await axios.post(FORGOT_PASSWORD_URL, JSON.stringify({ email }), {
         headers: { 'Content-Type': 'application/json' },
@@ -21,6 +27,8 @@ const ForgotPassword = () => {
       navigate('/verify-code', { state: { email } });
     } catch (err) {
       setErrorMsg(err.response?.data?.message || 'Failed to send reset code.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -42,8 +50,15 @@ const ForgotPassword = () => {
             required
             margin="normal"
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-            Send Reset Code
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Sending...' : 'Send Reset Code'}
           </Button>
         </form>
         <Typography mt={2} align="center">

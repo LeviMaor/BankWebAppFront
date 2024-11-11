@@ -20,21 +20,20 @@ import {
 
 const TransactionsById = () => {
     const { auth } = useContext(AuthContext);
-    const { id } = useParams(); // Get the ID from URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [transactions, setTransactions] = useState([]);
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(0); // Current page
-    const [rowsPerPage, setRowsPerPage] = useState(20); // Show 20 rows per page
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
     const [email, setEmail] = useState('');
     const [balance, setBalance] = useState(0);
-    const [isViewedUserAdmin, setIsViewedUserAdmin] = useState(true);
 
     useEffect(() => {
         const fetchTransactions = async () => {
             setLoading(true);
-            setErrorMsg(''); // Clear error message initially
+            setErrorMsg('');
             try {
                 const response = await axios.get(`/transactions/user/${id}`, {
                     headers: { Authorization: `Bearer ${auth?.accessToken}` },
@@ -47,15 +46,13 @@ const TransactionsById = () => {
                 setTransactions(sortedTransactions);
                 setEmail(response.data.email);
                 setBalance(response.data.balance);
-                setIsViewedUserAdmin(response.data.roles.includes('admin')); // Check if the viewed user is an admin
-
-                // If there are no transactions, clear the error message
-                if (sortedTransactions.length === 0) {
-                    setErrorMsg(''); // Set to empty string when no transactions
-                }
             } catch (error) {
                 if (error.response && error.response.status === 404) {
-                    setErrorMsg(''); // Clear error message when no transactions found
+                    const userResponse = await axios.get(`/users/${id}`, {
+                        headers: { Authorization: `Bearer ${auth?.accessToken}` },
+                    });
+                    setEmail(userResponse.data.email);
+                    setBalance(userResponse.data.balance);
                 } else {
                     setErrorMsg('Failed to load transactions.');
                 }
@@ -74,7 +71,7 @@ const TransactionsById = () => {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0); // Reset to first page
+        setPage(0);
     };
 
     const handleDeleteUser = async () => {
@@ -93,7 +90,6 @@ const TransactionsById = () => {
         }
     };
 
-    // Calculate the current transactions to display
     const currentTransactions = transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
@@ -107,17 +103,15 @@ const TransactionsById = () => {
 
             {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
 
-            {!isViewedUserAdmin && (
-                <Box display="flex" justifyContent="flex-end" sx={{ mt: 2 }}>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleDeleteUser}
-                    >
-                        Delete User
-                    </Button>
-                </Box>
-            )}
+            <Box display="flex" justifyContent="flex-end" sx={{ mt: 2 }}>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleDeleteUser}
+                >
+                    Delete User
+                </Button>
+            </Box>
 
             {loading ? (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
